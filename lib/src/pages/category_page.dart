@@ -45,9 +45,7 @@ class CategoryPage extends StatelessWidget {
       onDismissed: (direccion) => categoryBloc.deleteCategory(category.id),
       child: Container(
         width: double.infinity,
-        height: 70,
-        // color: Colors.blue,
-        // padding: EdgeInsets.all(10),
+        height: 80,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,8 +53,9 @@ class CategoryPage extends StatelessWidget {
             ListTile(
               title: Text(category.name),
               onTap: () => Navigator.pushNamed(context, 'list', arguments: category),
+              onLongPress: () => Navigator.pushNamed(context, 'new-category', arguments: category),
             ),
-            // Divider()
+            Divider()
           ],
         )
       )

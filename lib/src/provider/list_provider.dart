@@ -9,15 +9,12 @@ class ListProvider {
   Future<List<ListModel>> getListByCategory(CategoryModel category) async {
     final List<ListModel> categories = new List();
 
-    print(category.id);
-
     final resp = await http.get('${_url}/list/${category.id}');
     final decodeData = json.decode(resp.body)['list'];
 
     if (decodeData != '[]') {
-      decodeData.forEach((category) {
-        print('${category}');
-        final prodTemp = ListModel.fromJson(category);
+      decodeData.forEach((list) {
+        final prodTemp = ListModel.fromJson(list);
 
         categories.add(prodTemp);
       });
@@ -51,8 +48,10 @@ class ListProvider {
   }
 
   Future<bool> updateList(ListModel list) async {
-    final resp =
-        await http.put('${_url}/list/${list.id}', body: listModelToJson(list));
+    final resp = await http.put('${_url}/list/${list.id}', 
+        headers: {'Content-Type': 'application/json'},
+        body: listModelToJson(list));
+
     final decodeData = json.decode(resp.body)['list'];
 
     if (decodeData != '[]') {

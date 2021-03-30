@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/list_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/model/list_model.dart';
+import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/utils/arguments_util.dart';
 
 class NewListPage extends StatefulWidget {
   const NewListPage({Key key}) : super(key: key);
@@ -14,16 +16,17 @@ class _NewListPageState extends State<NewListPage> {
   final formKey = GlobalKey<FormState>();
   ListModel list = new ListModel();
   bool _guardando = false;
-  ListBloc _listBloc = ListBloc();
+  ListBloc _listBloc;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   CategoryModel category = new CategoryModel();
 
   @override
   Widget build(BuildContext context) {
-    final CategoryModel prodData = ModalRoute.of(context).settings.arguments;
-    if (prodData != null) {
-      category = prodData;
-    }
+    _listBloc = Provider.listBloc(context);
+    final ListOfCategory prodData = ModalRoute.of(context).settings.arguments;
+    if (prodData.category != null) category = prodData.category;
+    if (prodData.list != null) list = prodData.list;
+    
     return Scaffold(
       body: _createForm(),
     );
@@ -101,7 +104,6 @@ class _NewListPageState extends State<NewListPage> {
 
     if (!formKey.currentState.validate()) return;
 
-    // ejecuta todos los metodo save que esten dentro del formulario
     formKey.currentState.save();
 
     setState(() {
@@ -109,9 +111,9 @@ class _NewListPageState extends State<NewListPage> {
     });
 
     if (list.id == null) {
-      _listBloc.createList(list);
+      _listBloc.createList(list, category);
     } else {
-      _listBloc.updateList(list);
+      _listBloc.updateList(list, category);
     }
 
     Navigator.pop(context);

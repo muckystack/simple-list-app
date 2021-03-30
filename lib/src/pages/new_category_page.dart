@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/category_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
+import 'package:simple_list_app/src/singleton/bloc.dart';
 
 class NewCategoryPage extends StatefulWidget {
   const NewCategoryPage({Key key}) : super(key: key);
@@ -13,11 +14,19 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
   final formKey = GlobalKey<FormState>();
   CategoryModel category = new CategoryModel();
   bool _guardando = false;
-  CategoryBloc _categoryBloc = CategoryBloc();
+  CategoryBloc _categoryBloc;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    _categoryBloc = Provider.of(context);
+
+    
+    final CategoryModel prodData = ModalRoute.of(context).settings.arguments;
+    if (prodData != null) {
+      category = prodData;
+    }
+
     return Scaffold(
       body: _createForm(),
     );
@@ -74,7 +83,6 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
 
     if (!formKey.currentState.validate()) return;
 
-    // ejecuta todos los metodo save que esten dentro del formulario
     formKey.currentState.save();
 
     setState(() {

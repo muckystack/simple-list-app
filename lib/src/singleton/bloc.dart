@@ -4,7 +4,6 @@ import 'package:simple_list_app/src/bloc/list_bloc.dart';
 
 class Provider extends InheritedWidget {
 
-  // BLOCS
   final _categoryBloc = new CategoryBloc();
   final _listBloc = new ListBloc();
 
@@ -28,10 +27,6 @@ class Provider extends InheritedWidget {
     : super(key: key, child: child);
 
 
-
-
-  // Provider({Key key, Widget child})
-  //   : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;

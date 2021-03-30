@@ -18,50 +18,17 @@ class ListBloc {
     await _listProvider.deleteList(idList);
   }
 
-  void createList(ListModel list) async {
+  void createList(ListModel list, CategoryModel category) async {
     await _listProvider.createList(list);
-    // getListByCategory();
+    getListByCategory(category);
   }
 
-  void updateList(ListModel list) async {
+  void updateList(ListModel list, CategoryModel category) async {
     await _listProvider.updateList(list);
+    getListByCategory(category);
   }
-
-  // void agregarProductos(ProductoModel producto) async {
-
-  //   _cargandoController.sink.add(true);
-  //   await _productosProvider.crearProducto(producto);
-  //   _cargandoController.sink.add(false);
-
-  // }
-
-  // Future<String> subirFoto(File foto) async {
-
-  //   _cargandoController.sink.add(true);
-  //   final fotoUrl = await _productosProvider.subirImagen(foto);
-  //   _cargandoController.sink.add(false);
-
-  //   return fotoUrl;
-
-  // }
-
-  // void editarProductos(ProductoModel producto) async {
-
-  //   _cargandoController.sink.add(true);
-  //   await _productosProvider.editarProducto(producto);
-  //   _cargandoController.sink.add(false);
-
-  // }
-
-  // void borrarProducto(String id) async {
-
-  //   await _productosProvider.borrarProducto(id);
-
-  // }
 
   dispose() {
-    // _productosController?.close();
-    // _cargandoController?.close();
     _listController?.close();
   }
 }

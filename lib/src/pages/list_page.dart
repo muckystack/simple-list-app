@@ -4,6 +4,7 @@ import 'package:simple_list_app/src/bloc/list_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/model/list_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/utils/arguments_util.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key key}) : super(key: key);
@@ -63,7 +64,6 @@ class _ListPageState extends State<ListPage> {
       child: Container(
         width: double.infinity,
         height: 110,
-        // color: Colors.blue,
         padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +72,7 @@ class _ListPageState extends State<ListPage> {
             ListTile(
               title: Text(list.code),
               subtitle: Text(list.description),
-              // onTap: () => Navigator.pushNamed(context, 'list', arguments: list),
+              onTap: () => Navigator.pushNamed(context, 'new-list', arguments: ListOfCategory(category, list)),
             ),
             Divider()
           ],
