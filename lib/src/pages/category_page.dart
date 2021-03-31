@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/category_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/widgets/custom_appbar.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({Key key}) : super(key: key);
@@ -12,7 +13,13 @@ class CategoryPage extends StatelessWidget {
     categoryBloc.getCategory();
 
     return Scaffold(
-      body: _crearListado(categoryBloc),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          CustomAppBarInit(),
+          Expanded(child: _crearListado(categoryBloc))
+        ],
+      ),
       floatingActionButton: _crearBoton(context),
     );
   }

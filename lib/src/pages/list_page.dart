@@ -5,6 +5,7 @@ import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/model/list_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/utils/arguments_util.dart';
+import 'package:simple_list_app/src/widgets/custom_appbar.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key key}) : super(key: key);
@@ -30,7 +31,13 @@ class _ListPageState extends State<ListPage> {
     listBloc.getListByCategory(category);
 
     return Scaffold(
-      body: _crearListado(listBloc),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          CustomAppBar('Listado'),
+          Expanded(child: _crearListado(listBloc)),
+        ],
+      ),
       floatingActionButton: _crearBoton(context),
     );
   }
@@ -86,7 +93,7 @@ class _ListPageState extends State<ListPage> {
     return FloatingActionButton(
       backgroundColor: Color.fromRGBO(169, 80, 162, 1.0),
       child: Icon(Icons.add),
-      onPressed: () => Navigator.pushNamed(context, 'new-list', arguments: category),
+      onPressed: () => Navigator.pushNamed(context, 'new-list', arguments: ListOfCategory(category, null)),
     );
 
   }

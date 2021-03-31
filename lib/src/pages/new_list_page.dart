@@ -4,6 +4,7 @@ import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/model/list_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/utils/arguments_util.dart';
+import 'package:simple_list_app/src/widgets/custom_appbar.dart';
 
 class NewListPage extends StatefulWidget {
   const NewListPage({Key key}) : super(key: key);
@@ -24,11 +25,22 @@ class _NewListPageState extends State<NewListPage> {
   Widget build(BuildContext context) {
     _listBloc = Provider.listBloc(context);
     final ListOfCategory prodData = ModalRoute.of(context).settings.arguments;
+    String titleAppBar = 'Nuevo listado';
+
     if (prodData.category != null) category = prodData.category;
-    if (prodData.list != null) list = prodData.list;
-    
+    if (prodData.list != null) {
+      list = prodData.list;
+      titleAppBar = 'Edita listado';
+    }
+
     return Scaffold(
-      body: _createForm(),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          CustomAppBar(titleAppBar),
+          Expanded(child: _createForm()),
+        ],
+      ),
     );
   }
 

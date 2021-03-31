@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/category_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/widgets/custom_appbar.dart';
 
 class NewCategoryPage extends StatefulWidget {
   const NewCategoryPage({Key key}) : super(key: key);
@@ -21,14 +22,22 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
   Widget build(BuildContext context) {
     _categoryBloc = Provider.of(context);
 
-    
     final CategoryModel prodData = ModalRoute.of(context).settings.arguments;
+    String titleAppBar = 'Nueva categoría';
     if (prodData != null) {
       category = prodData;
+      titleAppBar = 'Edita categoría';
     }
 
+
     return Scaffold(
-      body: _createForm(),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          CustomAppBar(titleAppBar),
+          Expanded(child: _createForm()),
+        ],
+      ),
     );
   }
 
