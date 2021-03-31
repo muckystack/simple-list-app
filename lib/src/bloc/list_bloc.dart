@@ -9,23 +9,29 @@ class ListBloc {
   final _listController = new BehaviorSubject<List<ListModel>>();
   Stream<List<ListModel>> get listStream => _listController.stream;
 
-  void getListByCategory(CategoryModel category) async {
+  void reset() async {
+    _listController.sink.add(null);
+  }
+  
+  Future<bool> getListByCategory(CategoryModel category) async {
     final categories = await _listProvider.getListByCategory(category);
     _listController.sink.add(categories);
+    return true;
   }
 
-  void deleteList(idList) async {
+  Future<bool> deleteList(idList, CategoryModel category) async {
     await _listProvider.deleteList(idList);
+    return await getListByCategory(category);
   }
 
-  void createList(ListModel list, CategoryModel category) async {
+  Future<bool> createList(ListModel list, CategoryModel category) async {
     await _listProvider.createList(list);
-    getListByCategory(category);
+    return await getListByCategory(category);
   }
 
-  void updateList(ListModel list, CategoryModel category) async {
+  Future<bool> updateList(ListModel list, CategoryModel category) async {
     await _listProvider.updateList(list);
-    getListByCategory(category);
+    return await getListByCategory(category);
   }
 
   dispose() {

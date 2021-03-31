@@ -3,6 +3,7 @@ import 'package:simple_list_app/src/bloc/category_bloc.dart';
 import 'package:simple_list_app/src/model/category_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/widgets/custom_appbar.dart';
+import 'package:simple_list_app/src/widgets/loading.dart';
 
 class NewCategoryPage extends StatefulWidget {
   const NewCategoryPage({Key key}) : super(key: key);
@@ -29,7 +30,6 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
       titleAppBar = 'Edita categoría';
     }
 
-
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -47,8 +47,7 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
         padding: EdgeInsets.all(30),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
               _createName(),
               SizedBox(
@@ -88,8 +87,6 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
   }
 
   void _submit() async {
-    print('pero que ${category.id}');
-
     if (!formKey.currentState.validate()) return;
 
     formKey.currentState.save();
@@ -98,12 +95,15 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
       _guardando = true;
     });
 
+    buildShowDialog(context);
+
     if (category.id == null) {
-      _categoryBloc.createCategory(category);
+      await _categoryBloc.createCategory(category);
     } else {
-      _categoryBloc.updateCategory(category);
+      await _categoryBloc.updateCategory(category);
     }
 
+    Navigator.pop(context);
     Navigator.pop(context);
 
     setState(() {

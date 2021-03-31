@@ -5,6 +5,7 @@ import 'package:simple_list_app/src/model/list_model.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/utils/arguments_util.dart';
 import 'package:simple_list_app/src/widgets/custom_appbar.dart';
+import 'package:simple_list_app/src/widgets/loading.dart';
 
 class NewListPage extends StatefulWidget {
   const NewListPage({Key key}) : super(key: key);
@@ -50,8 +51,7 @@ class _NewListPageState extends State<NewListPage> {
         padding: EdgeInsets.all(30),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
               _createCode(),
               SizedBox(
@@ -61,7 +61,7 @@ class _NewListPageState extends State<NewListPage> {
               SizedBox(
                 height: 50,
               ),
-              _crearBoton()
+              _crearBoton(),
             ],
           ),
         ));
@@ -109,10 +109,7 @@ class _NewListPageState extends State<NewListPage> {
   }
 
   void _submit() async {
-    print('pero que ${list.id}');
-
     list.idCategory = category.id;
-    print('pero que ${list}');
 
     if (!formKey.currentState.validate()) return;
 
@@ -122,12 +119,15 @@ class _NewListPageState extends State<NewListPage> {
       _guardando = true;
     });
 
+    buildShowDialog(context);
+
     if (list.id == null) {
-      _listBloc.createList(list, category);
+      await _listBloc.createList(list, category);
     } else {
-      _listBloc.updateList(list, category);
+      await _listBloc.updateList(list, category);
     }
 
+    Navigator.pop(context);
     Navigator.pop(context);
 
     setState(() {

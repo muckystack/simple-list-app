@@ -9,23 +9,25 @@ class CategoryBloc {
   Stream<List<CategoryModel>> get categoriesStream =>
       _categoryController.stream;
 
-  void getCategory() async {
+  Future<bool> getCategory() async {
     final categories = await _categoryProvider.getCategory();
     _categoryController.sink.add(categories);
+    return true;
   }
 
-  void deleteCategory(idCategory) async {
+  Future<bool> deleteCategory(idCategory) async {
     await _categoryProvider.deleteCategory(idCategory);
+    return await getCategory();
   }
 
-  void createCategory(CategoryModel category) async {
+  Future<bool> createCategory(CategoryModel category) async {
     await _categoryProvider.createCategory(category);
-    getCategory();
+    return await getCategory();
   }
 
-  void updateCategory(CategoryModel category) async {
+  Future<bool> updateCategory(CategoryModel category) async {
     await _categoryProvider.updateCategory(category);
-    getCategory();
+    return await getCategory();
   }
 
   dispose() {

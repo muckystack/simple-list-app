@@ -7,16 +7,7 @@ import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/utils/arguments_util.dart';
 import 'package:simple_list_app/src/widgets/custom_appbar.dart';
 
-class ListPage extends StatefulWidget {
-  const ListPage({Key key}) : super(key: key);
-
-  @override
-  _ListPageState createState() => _ListPageState();
-}
-
-class _ListPageState extends State<ListPage> {
-
-
+class ListPage extends StatelessWidget {
   CategoryModel category = new CategoryModel();
 
   @override
@@ -24,7 +15,7 @@ class _ListPageState extends State<ListPage> {
     final listBloc = Provider.listBloc(context);
 
     final CategoryModel prodData = ModalRoute.of(context).settings.arguments;
-    if(prodData != null) {
+    if (prodData != null) {
       category = prodData;
     }
 
@@ -45,8 +36,7 @@ class _ListPageState extends State<ListPage> {
   Widget _crearListado(ListBloc listBloc) {
     return StreamBuilder(
       stream: listBloc.listStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ListModel>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<ListModel>> snapshot) {
         if (snapshot.hasData) {
           final list = snapshot.data;
           return ListView.builder(
@@ -60,41 +50,40 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-  Widget _crearItem(
-      BuildContext context, ListModel list, ListBloc listBloc) {
+  Widget _crearItem(BuildContext context, ListModel list, ListBloc listBloc) {
     return Dismissible(
-      key: UniqueKey(),
-      background: Container(
-        color: Colors.red,
-      ),
-      onDismissed: (direccion) => listBloc.deleteList(list.id),
-      child: Container(
-        width: double.infinity,
-        height: 110,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(list.code),
-              subtitle: Text(list.description),
-              onTap: () => Navigator.pushNamed(context, 'new-list', arguments: ListOfCategory(category, list)),
-            ),
-            Divider()
-          ],
-        )
-      )
-    );
+        key: UniqueKey(),
+        background: Container(
+          color: Colors.red,
+        ),
+        onDismissed: (direccion) async {
+          await listBloc.deleteList(list.id, category);
+        },
+        child: Container(
+            width: double.infinity,
+            height: 110,
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text(list.code),
+                  subtitle: Text(list.description),
+                  onTap: () => Navigator.pushNamed(context, 'new-list',
+                      arguments: ListOfCategory(category, list)),
+                ),
+                Divider()
+              ],
+            )));
   }
 
-   _crearBoton(BuildContext context) {
-
+  _crearBoton(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Color.fromRGBO(169, 80, 162, 1.0),
       child: Icon(Icons.add),
-      onPressed: () => Navigator.pushNamed(context, 'new-list', arguments: ListOfCategory(category, null)),
+      onPressed: () => Navigator.pushNamed(context, 'new-list',
+          arguments: ListOfCategory(category, null)),
     );
-
   }
 }
