@@ -62,7 +62,10 @@ class CategoryPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text(category.name),
+              title: Text(
+                category.name,
+                overflow: TextOverflow.ellipsis,
+              ),
               onTap: () {
                 listBloc.reset();
                 Navigator.pushNamed(context, 'list', arguments: category);

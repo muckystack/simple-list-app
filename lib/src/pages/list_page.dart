@@ -25,7 +25,7 @@ class ListPage extends StatelessWidget {
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          CustomAppBar('Listado'),
+          CustomAppBar(category.name),
           Expanded(child: _crearListado(listBloc)),
         ],
       ),
@@ -68,8 +68,14 @@ class ListPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  title: Text(list.code),
-                  subtitle: Text(list.description),
+                  title: Text(
+                    list.code,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    list.description,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   onTap: () => Navigator.pushNamed(context, 'new-list',
                       arguments: ListOfCategory(category, list)),
                 ),
