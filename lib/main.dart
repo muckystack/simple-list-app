@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: miTema,
-        title: 'Mi player musica',
         initialRoute: 'categories',
         routes: {
           'categories' : (BuildContext context) => CategoryPage(),
