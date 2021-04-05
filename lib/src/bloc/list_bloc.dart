@@ -18,6 +18,12 @@ class ListBloc {
     _listController.sink.add(categories);
     return true;
   }
+  
+  Future<bool> getListByCategoryAndFilter(CategoryModel category, String filter) async {
+    final categories = await _listProvider.getListByCategoryAndFilter(category, filter);
+    _listController.sink.add(categories);
+    return true;
+  }
 
   Future<bool> deleteList(idList, CategoryModel category) async {
     await _listProvider.deleteList(idList);

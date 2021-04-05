@@ -22,6 +22,23 @@ class ListProvider {
 
     return categories;
   }
+  
+  Future<List<ListModel>> getListByCategoryAndFilter(CategoryModel category, String filter) async {
+    final List<ListModel> categories = new List();
+
+    final resp = await http.get('${_url}/list/${category.id}?filter=${filter}');
+    final decodeData = json.decode(resp.body)['list'];
+
+    if (decodeData != '[]') {
+      decodeData.forEach((list) {
+        final prodTemp = ListModel.fromJson(list);
+
+        categories.add(prodTemp);
+      });
+    }
+
+    return categories;
+  }
 
   Future<bool> deleteList(idList) async {
     final resp = await http.delete('${_url}/list/${idList}');

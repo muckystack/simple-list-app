@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simple_list_app/src/bloc/list_bloc.dart';
+import 'package:simple_list_app/src/model/category_model.dart';
+import 'package:simple_list_app/src/singleton/bloc.dart';
 
 class CustomAppBar extends StatelessWidget {
   final title;
@@ -64,5 +67,78 @@ class CustomAppBarInit extends StatelessWidget {
         height: 40,
       ),
     );
+  }
+}
+
+
+class CustomAppBarSearch extends StatefulWidget {
+  final title;
+  CustomAppBarSearch(this.title);
+
+  @override
+  _CustomAppBarSearchState createState() => _CustomAppBarSearchState();
+}
+
+class _CustomAppBarSearchState extends State<CustomAppBarSearch> {
+  bool buscando = false;
+  Icon iconSearch = Icon(FontAwesomeIcons.search);
+  CategoryModel category = new CategoryModel();
+
+  @override
+  Widget build(BuildContext context) {
+    ListBloc listBloc = Provider.listBloc(context);
+    final CategoryModel prodData = ModalRoute.of(context).settings.arguments;
+    if (prodData != null) {
+      category = prodData;
+    }
+
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(top: 10.0),
+        child: Row(
+          children: [
+            IconButton(
+                icon: Icon(FontAwesomeIcons.chevronLeft),
+                onPressed: () => Navigator.pop(context)),
+            titleAndSearch(widget.title, listBloc),
+            IconButton(
+                icon: iconSearch,
+                onPressed: () {
+                  buscando = !buscando;
+                  (buscando)
+                      ? iconSearch = Icon(FontAwesomeIcons.times)
+                      : iconSearch = Icon(FontAwesomeIcons.search);
+                  setState(() {});
+                }),
+          ],
+        ),
+        height: 40,
+      ),
+    );
+  }
+
+  Widget titleAndSearch(String title, ListBloc listBloc) {
+    final categoryTitle = Expanded(
+      child: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(fontSize: 25),
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    final listSearch = Expanded(
+        child: Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: TextField(
+        decoration: InputDecoration(hintText: 'Buscar registro'),
+        onChanged: (filter) async {
+          listBloc.reset();
+          await listBloc.getListByCategoryAndFilter(category, filter);
+        },
+      ),
+    ));
+
+    return (buscando) ? listSearch : categoryTitle;
   }
 }

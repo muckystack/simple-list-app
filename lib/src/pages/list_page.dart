@@ -25,7 +25,7 @@ class ListPage extends StatelessWidget {
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          CustomAppBar(category.name),
+          CustomAppBarSearch(category.name),
           Expanded(child: _crearListado(listBloc)),
         ],
       ),
