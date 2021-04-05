@@ -134,6 +134,7 @@ class _CustomAppBarSearchState extends State<CustomAppBarSearch> {
         child: Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
+        autofocus: true,
         decoration: InputDecoration(hintText: 'Buscar registro'),
         onChanged: (filter) async {
           listBloc.reset();
