@@ -76,7 +76,7 @@ class _NewListPageState extends State<NewListPage> {
       ),
       onSaved: (value) => list.code = value,
       validator: (value) {
-        return (value.length < 3) ? 'Ingresa el código' : null;
+        return (value.length < 1) ? 'Ingresa el código' : null;
       },
     );
   }
@@ -89,9 +89,6 @@ class _NewListPageState extends State<NewListPage> {
         labelText: 'Nueva descripción',
       ),
       onSaved: (value) => list.description = value,
-      validator: (value) {
-        return (value.length < 3) ? 'Ingrese la descripció' : null;
-      },
     );
   }
 
