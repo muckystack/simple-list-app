@@ -70,7 +70,6 @@ class CustomAppBarInit extends StatelessWidget {
   }
 }
 
-
 class CustomAppBarSearch extends StatefulWidget {
   final title;
   CustomAppBarSearch(this.title);
@@ -105,9 +104,13 @@ class _CustomAppBarSearchState extends State<CustomAppBarSearch> {
                 icon: iconSearch,
                 onPressed: () {
                   buscando = !buscando;
-                  (buscando)
-                      ? iconSearch = Icon(FontAwesomeIcons.times)
-                      : iconSearch = Icon(FontAwesomeIcons.search);
+                  if (buscando) {
+                    iconSearch = Icon(FontAwesomeIcons.times);
+                  } else {
+                    listBloc.reset();
+                    listBloc.getListByCategory(category);
+                    iconSearch = Icon(FontAwesomeIcons.search);
+                  }
                   setState(() {});
                 }),
           ],
