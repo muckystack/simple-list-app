@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/pages/list_page.dart';
+import 'package:simple_list_app/src/pages/login_page.dart';
 import 'package:simple_list_app/src/pages/new_category_page.dart';
 import 'package:simple_list_app/src/pages/category_page.dart';
 import 'package:simple_list_app/src/pages/new_list_page.dart';
@@ -15,12 +16,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: miTema,
-        initialRoute: 'categories',
+        initialRoute: 'login',
         routes: {
           'categories' : (BuildContext context) => CategoryPage(),
           'new-category' : (BuildContext context) => NewCategoryPage(),
           'list' : (BuildContext context) => ListPage(),
           'new-list' : (BuildContext context) => NewListPage(),
+          'login' : (BuildContext context) => LoginPage(),
         },
       ),
     );

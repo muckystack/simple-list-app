@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:simple_list_app/src/bloc/login_bloc.dart';
+import 'package:simple_list_app/src/provider/user_provider.dart';
+import 'package:simple_list_app/src/singleton/bloc.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -11,6 +14,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    final bloc = Provider.loginBloc(context);
+    // final peticion = UserProvider();
+    // peticion.getUser('user@gmail.com', '123456');
     // TODO: implement build
     return Scaffold(
       body: SingleChildScrollView(
@@ -31,37 +38,9 @@ class _LoginPageState extends State<LoginPage> {
                         fit: BoxFit.fitHeight,
                       ),
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(179, 99, 194, 1)
-                          )
-                        ),
-                        labelStyle: TextStyle(
-                          color: Color.fromRGBO(179, 99, 194, 1),
-                        ),
-                        labelText: 'Correo',
-                      ),
-                    ),
+                    _emailField(bloc),
                     SizedBox(height: 20,),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(179, 99, 194, 1)
-                          )
-                        ),
-                        labelText: 'Contraseña',
-                        labelStyle: TextStyle(
-                          color: Color.fromRGBO(179, 99, 194, 1),
-                          
-                        ),
-                      ),
-                    ),
+                    _passwordField(bloc),
                     SizedBox(height: 20,),
                     Container(
                       // color: Colors.redAccent,
@@ -104,4 +83,58 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+  Widget _emailField(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.emailStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(179, 99, 194, 1)
+              )
+            ),
+            labelStyle: TextStyle(
+              color: Color.fromRGBO(179, 99, 194, 1),
+            ),
+            labelText: 'Correo',
+          ),
+          onChanged: (String value) => bloc.changeEmail(value),
+        );
+      },
+    );
+  }
+
+
+
+  Widget _passwordField(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.passwordStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return TextField(
+          obscureText: true,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color.fromRGBO(179, 99, 194, 1)
+              )
+            ),
+            labelText: 'Contraseña',
+            labelStyle: TextStyle(
+              color: Color.fromRGBO(179, 99, 194, 1),
+            ),
+            counterText: snapshot.data
+          ),
+          onChanged: (String value) => bloc.changePassword(value),
+        );
+      },
+    );
+  }
+
+
+
 }

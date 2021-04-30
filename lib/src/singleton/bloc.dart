@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:simple_list_app/src/bloc/category_bloc.dart';
 import 'package:simple_list_app/src/bloc/list_bloc.dart';
+import 'package:simple_list_app/src/bloc/login_bloc.dart';
 
 class Provider extends InheritedWidget {
 
   final _categoryBloc = new CategoryBloc();
   final _listBloc = new ListBloc();
+  final _loginBloc = new LoginBloc();
 
 
 
@@ -41,6 +44,12 @@ class Provider extends InheritedWidget {
   static ListBloc listBloc (BuildContext context) {
 
     return context.dependOnInheritedWidgetOfExactType<Provider>()._listBloc;
+
+  }
+
+  static LoginBloc loginBloc (BuildContext context) {
+
+    return context.dependOnInheritedWidgetOfExactType<Provider>()._loginBloc;
 
   }
 
