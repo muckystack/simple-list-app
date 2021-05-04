@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/login_bloc.dart';
 import 'package:simple_list_app/src/provider/user_provider.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/widgets/dialog_alert.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -11,13 +12,12 @@ class LoginPage extends StatefulWidget{
 class _LoginPageState extends State<LoginPage> {
 
   bool _isChecked = false;
+  final userValidate = UserProvider();
 
   @override
   Widget build(BuildContext context) {
     
     final bloc = Provider.loginBloc(context);
-    // final peticion = UserProvider();
-    // peticion.getUser('user@gmail.com', '123456');
     // TODO: implement build
     return Scaffold(
       body: SingleChildScrollView(
@@ -58,17 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(height: 20,),
-                    Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(179, 99, 194, 1))
-                        ),
-                        child: Text('Entrar'),
-                        onPressed: (){},
-                      ),
-                    ),
+                    _loginButton(bloc),
                     SizedBox(height: 20,),
                     FlatButton(
                       child: Text('Crear cuenta'),
@@ -97,10 +87,11 @@ class _LoginPageState extends State<LoginPage> {
                 color: Color.fromRGBO(179, 99, 194, 1)
               )
             ),
+            labelText: 'Correo',
             labelStyle: TextStyle(
               color: Color.fromRGBO(179, 99, 194, 1),
             ),
-            labelText: 'Correo',
+            errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changeEmail(value),
         );
@@ -127,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
             labelStyle: TextStyle(
               color: Color.fromRGBO(179, 99, 194, 1),
             ),
-            counterText: snapshot.data
+            errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changePassword(value),
         );
@@ -135,6 +126,39 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
+  Widget _loginButton(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.validateFormStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return Container(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(179, 99, 194, 1))
+            ),
+            child: Text('Entrar'),
+            onPressed: snapshot.hasData ? () => _validateCredentials(bloc, context) : null
+          ),
+        );
+
+      },
+    );
+  }
+
+  _validateCredentials(LoginBloc bloc, BuildContext context) async {
+    Map request =  await userValidate.getUser(bloc.email, bloc.password);
+
+    if(request['success']){
+      // print(request['token']);
+      Navigator.pushReplacementNamed(context, 'categories', arguments: request['token']);
+    }else{
+      myAlert(context, request['message']);
+    }
+
+
+  }
 
 
 }

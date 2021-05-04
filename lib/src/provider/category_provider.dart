@@ -8,7 +8,7 @@ class CategoryProvider {
   Future<List<CategoryModel>> getCategory() async {
     final List<CategoryModel> categories = new List();
 
-    final resp = await http.get('${_url}/category');
+    final resp = await http.get('${_url}/category', headers: {'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MDg1ZDU4MjYzNzBmOTAwMTVjZDQzZTEiLCJpYXQiOjE2MjAxMDA0NzQsImV4cCI6MTYyMDE4Njg3NH0.yOuDnk3O1XuXu9PN8_n3FQNhkTP98nO04LOFiHTqlNk'});
     final decodeData = json.decode(resp.body)['category'];
 
     if (decodeData != '[]') {

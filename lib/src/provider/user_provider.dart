@@ -10,7 +10,7 @@ class UserProvider{
   final _url = 'https://simple-list-muckystack.herokuapp.com';
   String _token = '';
 
-  Future<List<UserModel>> getUser(String email, String password) async{
+  Future<Map<String, dynamic>> getUser(String email, String password) async{
 
     final List<UserModel> user = [];
     
@@ -31,21 +31,27 @@ class UserProvider{
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     
 
-    if(decodedData == null) return [];
+    if(decodedData == null) return {'success': false, 'message': 'Error'};
 
     final status = decodedData['status']['status'];
     final userData = decodedData['user'];
 
     if (status == 201 && decodedData.containsKey('token')) {
-      print('entendido');
+      // print('save preferences');
       final userTemp = UserModel.fromJson(userData);
       user.add(userTemp);
 
       _token = decodedData['token'];
 
+        return {
+          'success': true, 'token': decodedData['token']
+        };
+    }else{
+        return {
+          'success': false, 'message': decodedData['message']
+        };
     }
 
-    return  user;
   }
 
 
