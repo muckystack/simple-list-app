@@ -33,6 +33,7 @@ dependencies:
   mime_type:
   http: 0.12.0
   rxdart: ^0.22.6
+  shared_preferences: ^2.0.5
 
 dev_dependencies:
   flutter_test:

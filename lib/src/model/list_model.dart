@@ -10,18 +10,21 @@ class ListModel {
         this.code,
         this.description,
         this.idCategory,
+        this.status,
     });
 
     String id;
     String code;
     String description;
     String idCategory;
+    String status;
 
     factory ListModel.fromJson(Map<String, dynamic> json) => ListModel(
         id: json["id"],
         code: json["code"],
         description: json["description"],
         idCategory: json["idCategory"],
+        status: json["status"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -29,5 +32,6 @@ class ListModel {
         "code": code,
         "description": description,
         "idCategory": idCategory,
+        "status": status,
     };
 }

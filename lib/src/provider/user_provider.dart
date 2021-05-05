@@ -3,12 +3,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:simple_list_app/src/model/user_model.dart';
+import 'package:simple_list_app/src/user_preferences/user_preferences.dart';
 
 
 class UserProvider{
 
+  final _userPref = UserPreferences();
   final _url = 'https://simple-list-muckystack.herokuapp.com';
-  String _token = '';
 
   Future<Map<String, dynamic>> getUser(String email, String password) async{
 
@@ -40,8 +41,7 @@ class UserProvider{
       // print('save preferences');
       final userTemp = UserModel.fromJson(userData);
       user.add(userTemp);
-
-      _token = decodedData['token'];
+      _userPref.token = decodedData['token'];
 
         return {
           'success': true, 'token': decodedData['token']
