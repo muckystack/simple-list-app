@@ -25,7 +25,7 @@ class ValidateToken{
     if(decodedData == null) return false;
 
     if(decodedData['message'] == 'Token valido'){
-      _prefs.setInitialRoute('categories');
+      _prefs.setInitialRoute('home');
       return true;
 
     }else{

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_list_app/src/pages/home_page.dart';
 import 'package:simple_list_app/src/pages/list_page.dart';
 import 'package:simple_list_app/src/pages/login_page.dart';
 import 'package:simple_list_app/src/pages/new_category_page.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           'list' : (BuildContext context) => ListPage(),
           'new-list' : (BuildContext context) => NewListPage(),
           'login' : (BuildContext context) => LoginPage(),
+          'home' : (BuildContext context) => HomePage(),
         },
       ),
     );

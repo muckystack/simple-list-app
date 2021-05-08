@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if(request['success']){
       // print(request['token']);
-      Navigator.pushReplacementNamed(context, 'categories', arguments: request['token']);
+      Navigator.pushReplacementNamed(context, 'home', arguments: request['token']);
     }else{
       myAlert(context, request['message']);
     }
