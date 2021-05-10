@@ -16,58 +16,64 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    
+
+    final screen = MediaQuery.of(context);
+    final height = screen.size.height;    
+    final width = screen.size.width;  
+      
     final bloc = Provider.loginBloc(context);
     // TODO: implement build
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 400,
-                      // width: 250,
-                      // color: Colors.red,
-                      padding: EdgeInsets.only(top: 80, bottom: 80),
-                      child: Image(
-                        image: AssetImage('assets/Logo.png'), // si la foto tiene un valor entonces toma path si es nullo agarra la img de la dir
-                        fit: BoxFit.fitHeight,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.16),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: height * 0.27,
+                        // color: Colors.red,
+                        margin: EdgeInsets.symmetric(vertical: height * 0.05),
+                        child: Image(
+                          image: AssetImage('assets/Logo.png'), // si la foto tiene un valor entonces toma path si es nullo agarra la img de la dir
+                          fit: BoxFit.scaleDown,
+                        ),
                       ),
-                    ),
-                    _emailField(bloc),
-                    SizedBox(height: 20,),
-                    _passwordField(bloc),
-                    SizedBox(height: 20,),
-                    Container(
-                      // color: Colors.redAccent,
-                      child: CheckboxListTile(
-                        contentPadding: EdgeInsets.only(left: - double.infinity),
-                        activeColor: Color.fromRGBO(179, 99, 194, 1),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text('Recordar sesión'),
-                        value: _isChecked,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _isChecked = value;
-                          });
-                        },
+                      SizedBox(height: height * 0.02,),
+                      _emailField(bloc),
+                      SizedBox(height: height * 0.02,),
+                      _passwordField(bloc),
+                      SizedBox(height: height * 0.02,),
+                      Container(
+                        // color: Colors.redAccent,
+                        child: CheckboxListTile(
+                          contentPadding: EdgeInsets.only(left: - double.infinity),
+                          activeColor: Color.fromRGBO(179, 99, 194, 1),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text('Recordar sesión'),
+                          value: _isChecked,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _isChecked = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20,),
-                    _loginButton(bloc),
-                    SizedBox(height: 20,),
-                    FlatButton(
-                      child: Text('Crear cuenta'),
-                      onPressed: () =>{},
-                    ),
-                  ],
+                      SizedBox(height: height * 0.02,),
+                      _loginButton(bloc, height),
+                      SizedBox(height: height * 0.02,),
+                      FlatButton(
+                        child: Text('Crear cuenta'),
+                        onPressed: () =>{},
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -81,16 +87,16 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return TextField(
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color.fromRGBO(179, 99, 194, 1)
-              )
-            ),
             labelText: 'Correo',
-            labelStyle: TextStyle(
-              color: Color.fromRGBO(179, 99, 194, 1),
-            ),
+            // border: OutlineInputBorder(),
+            // focusedBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(
+            //     color: Color.fromRGBO(179, 99, 194, 1)
+            //   )
+            // ),
+            // labelStyle: TextStyle(
+            //   color: Color.fromRGBO(179, 99, 194, 1),
+            // ),
             errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changeEmail(value),
@@ -108,16 +114,16 @@ class _LoginPageState extends State<LoginPage> {
         return TextField(
           obscureText: true,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color.fromRGBO(179, 99, 194, 1)
-              )
-            ),
             labelText: 'Contraseña',
-            labelStyle: TextStyle(
-              color: Color.fromRGBO(179, 99, 194, 1),
-            ),
+            // border: OutlineInputBorder(),
+            // focusedBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(
+            //     color: Color.fromRGBO(179, 99, 194, 1)
+            //   )
+            // ),
+            // labelStyle: TextStyle(
+            //   color: Color.fromRGBO(179, 99, 194, 1),
+            // ),
             errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changePassword(value),
@@ -127,13 +133,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-  Widget _loginButton(LoginBloc bloc) {
+  Widget _loginButton(LoginBloc bloc, double height) {
     return StreamBuilder(
       stream: bloc.validateFormStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return Container(
           width: double.infinity,
-          height: 50,
+          height: height * 0.07,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(179, 99, 194, 1))
