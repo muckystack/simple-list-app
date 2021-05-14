@@ -26,51 +26,45 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.16),
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.16),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: height * 0.27,
-                        // color: Colors.red,
-                        margin: EdgeInsets.symmetric(vertical: height * 0.05),
-                        child: Image(
-                          image: AssetImage('assets/Logo.png'), // si la foto tiene un valor entonces toma path si es nullo agarra la img de la dir
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02,),
-                      _emailField(bloc),
-                      SizedBox(height: height * 0.02,),
-                      _passwordField(bloc),
-                      SizedBox(height: height * 0.02,),
-                      Container(
-                        // color: Colors.redAccent,
-                        child: CheckboxListTile(
-                          contentPadding: EdgeInsets.only(left: - double.infinity),
-                          activeColor: Color.fromRGBO(179, 99, 194, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          title: Text('Recordar sesión'),
-                          value: _isChecked,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _isChecked = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02,),
-                      _loginButton(bloc, height),
-                      SizedBox(height: height * 0.02,),
-                      FlatButton(
-                        child: Text('Crear cuenta'),
-                        onPressed: () =>{},
-                      ),
-                    ],
+                Container(
+                  height: height * 0.27,
+                  // color: Colors.red,
+                  margin: EdgeInsets.symmetric(vertical: height * 0.05),
+                  child: Image(
+                    image: AssetImage('assets/Logo.png'), // si la foto tiene un valor entonces toma path si es nullo agarra la img de la dir
+                    fit: BoxFit.scaleDown,
                   ),
+                ),
+                SizedBox(height: height * 0.02,),
+                _emailField(bloc),
+                SizedBox(height: height * 0.02,),
+                _passwordField(bloc),
+                SizedBox(height: height * 0.02,),
+                Container(
+                  // color: Colors.redAccent,
+                  child: CheckboxListTile(
+                    contentPadding: EdgeInsets.only(left: - double.infinity),
+                    activeColor: Color.fromRGBO(179, 99, 194, 1),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text('Recordar sesión'),
+                    value: _isChecked,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isChecked = value;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(height: height * 0.02,),
+                _loginButton(bloc, height),
+                SizedBox(height: height * 0.02,),
+                FlatButton(
+                  child: Text('Crear cuenta'),
+                  onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
                 ),
               ],
             ),
@@ -158,9 +152,10 @@ class _LoginPageState extends State<LoginPage> {
 
     if(request['success']){
       // print(request['token']);
+      bloc.dispose();
       Navigator.pushReplacementNamed(context, 'home', arguments: request['token']);
     }else{
-      myAlert(context, request['message']);
+      myAlert(context, request['message'], 'Hubo un error');
     }
 
 

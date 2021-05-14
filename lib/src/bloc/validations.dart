@@ -27,4 +27,15 @@ class Validations{
       }
     }
   );
+  // genre validation
+  final genderValidation = StreamTransformer<int, int>.fromHandlers(
+    handleData: (genre, sink){
+
+      if(genre != null){
+        sink.add(genre);
+      } else{
+        sink.addError('Selecciona un género');
+      }
+    }
+  );
 }

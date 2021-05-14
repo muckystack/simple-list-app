@@ -5,6 +5,7 @@ import 'package:simple_list_app/src/pages/login_page.dart';
 import 'package:simple_list_app/src/pages/new_category_page.dart';
 import 'package:simple_list_app/src/pages/category_page.dart';
 import 'package:simple_list_app/src/pages/new_list_page.dart';
+import 'package:simple_list_app/src/pages/register_page.dart';
 import 'package:simple_list_app/src/provider/validate_token.dart';
 import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/theme/theme.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           'list' : (BuildContext context) => ListPage(),
           'new-list' : (BuildContext context) => NewListPage(),
           'login' : (BuildContext context) => LoginPage(),
+          'register' : (BuildContext context) => RegisterPage(),
           'home' : (BuildContext context) => HomePage(),
         },
       ),

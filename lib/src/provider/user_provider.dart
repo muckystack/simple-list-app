@@ -54,5 +54,48 @@ class UserProvider{
 
   }
 
+  // register user
+  Future<Map<String, dynamic>> registerUser(String email, String sex, String password, String confirmPassword,) async{
+    
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final encoding = Encoding.getByName('utf-8');
+    final body = {
+      "email"     : email,
+      "sex"  : sex,
+      "password"  : password,
+      "passwordConfirm"  : confirmPassword
+    };
+    String jsonBody = json.encode(body);
+
+    final resp = await http.post(
+      '${_url}/auth/register', 
+      headers: headers,
+      encoding: encoding,
+      body: jsonBody
+    );
+
+    final Map<String, dynamic> decodedData = json.decode(resp.body);
+    // print(decodedData);
+    if(decodedData == null) return {'success': false, 'message': 'Error'};
+
+    final status = decodedData['status']['status'];
+    final message = decodedData['message'];
+
+    if (status == 201 
+        && message == 'Se ha enviado un correo a la dirección con la que te registraste.') {
+        return {
+          'success' : true, 
+          'token'   : decodedData['token'], 
+          'message' : decodedData['message']
+        };
+    }else{
+        return {
+          'success': false, 
+          'message': decodedData['message']
+        };
+    }
+
+  }
+
 
 }
