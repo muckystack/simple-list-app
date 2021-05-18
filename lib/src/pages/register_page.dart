@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/login_bloc.dart';
 import 'package:simple_list_app/src/provider/user_provider.dart';
-import 'package:simple_list_app/src/singleton/bloc.dart';
+// import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/widgets/dialog_alert.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -13,6 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final userValidate = UserProvider();
   int _gender = null;
+    final blocRegister = LoginBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
     final width = screen.size.width;  
 
     // userValidate.registerUser("user@gmail.com", "MEN", "123456", "123456");
-    final blocRegister = Provider.loginBloc(context);
 
     return SafeArea(
       child: Scaffold(
@@ -55,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text('Ya tengo una cuenta'),
                   onPressed: () {
                     blocRegister.dispose();
-                    Navigator.pushReplacementNamed(context, 'login');
+                    Navigator.pushNamed(context, 'login');
                   } 
                 ),
               ],
@@ -106,6 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot){
         // print(snapshot);
         return TextField(
+          keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Correo',
             errorText: snapshot.error
@@ -127,6 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
             }
           },
           obscureText: true,
+          keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
             labelText: 'Contraseña',
             errorText: snapshot.error
@@ -142,6 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
       stream: blocRegister.confirmPasswordStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return TextField(
+          keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Confirmar contraseña',

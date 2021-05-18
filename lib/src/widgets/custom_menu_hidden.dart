@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hidden_drawer_menu/controllers/simple_hidden_drawer_controller.dart';
+import 'package:simple_list_app/src/user_preferences/user_preferences.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
 
   SimpleHiddenDrawerController controller;
+  final _userPref = UserPreferences();
 
   @override
   void didChangeDependencies() {
@@ -54,8 +56,9 @@ class _MenuState extends State<Menu> {
                           backgroundColor: Colors.white,
                         ),
                         SizedBox(height: 16,),
-                        Text(
-                          'Usuario'
+                        Text(_userPref.email,
+                          style: TextStyle(fontSize: 17,),
+                          overflow: TextOverflow.fade,
                         ),
                       ],
                     ),
@@ -65,7 +68,7 @@ class _MenuState extends State<Menu> {
                       physics: NeverScrollableScrollPhysics(),
                       children: [
                         ListTile(
-                          title: Text('Opcion 1'),
+                          title: Text('Categorías'),
                           onTap: () {
                             controller.setSelectedMenuPosition(0);
                           },
@@ -88,6 +91,10 @@ class _MenuState extends State<Menu> {
                       children: [
                         ListTile(
                           title: Text('Log Out'),
+                          onTap: (){
+                            _userPref.userLogOut();
+                            Navigator.pushReplacementNamed(context, 'login');
+                          },
                         ),
                       ],
                     ),

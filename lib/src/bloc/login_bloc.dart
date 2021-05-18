@@ -7,23 +7,26 @@ class LoginBloc with Validations{
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   // register
-  BehaviorSubject<String> _emailRegisterController = BehaviorSubject<String>();
-  BehaviorSubject<String> _passwordRegisterController = BehaviorSubject<String>();
-  BehaviorSubject<String> _confirmPasswordController = BehaviorSubject<String>();
-  BehaviorSubject<int>    _genderController = BehaviorSubject<int>();
+  final _emailRegisterController = BehaviorSubject<String>();
+  final _passwordRegisterController = BehaviorSubject<String>();
+  final _confirmPasswordController = BehaviorSubject<String>();
+  final    _genderController = BehaviorSubject<int>();
 
   // get the streams 
   Stream<String> get emailStream    => _emailController.stream.transform(validateEmail);
   Stream<String> get passwordStream => _passwordController.stream.transform(validatePassword);
   // register page
   Stream<String> get emailRegisterStream    => _emailRegisterController.stream.transform(validateEmail);
-  Stream<String> get passwordRegisterStream => _passwordRegisterController.stream.transform(validatePassword);
+  Stream<String> get passwordRegisterStream => _passwordRegisterController.stream.transform(validatePassword)
+                                              .doOnData((String c){ 
+                                                if(0 != confirmPassword.compareTo(c)){
+                                                  _passwordRegisterController.addError("Las contraseñas deben ser igual");
+                                                }});
   Stream<String> get confirmPasswordStream => _confirmPasswordController.stream.transform(validatePassword)
-                                              .doOnData((String c) { 
+                                              .doOnData((String c){ 
                                                 if(0 != passwordRegister.compareTo(c)){
                                                   _confirmPasswordController.addError("Las contraseñas deben ser igual");
-                                                }
-                                              });
+                                                }});
   Stream<int> get genderStream => _genderController.stream.transform(genderValidation);
 
 
@@ -32,7 +35,7 @@ class LoginBloc with Validations{
     Observable.combineLatest2(emailStream, passwordStream, (a, b) => true);  
   // validate register form
   Stream<bool> get validateRegisterFormStream =>
-    Observable.combineLatest3(emailRegisterStream, confirmPasswordStream, genderStream, (a, b, c) => true);
+    Observable.combineLatest4(emailRegisterStream, passwordRegisterStream, confirmPasswordStream, genderStream, (a, b, c, d) => true);
 
 
 
@@ -56,21 +59,13 @@ class LoginBloc with Validations{
   String get confirmPassword => _confirmPasswordController.value;
   int get gender => _genderController.value;
 
-  dispose(){
-
+  dispose(){    
     _emailController?.close();
     _passwordController?.close();
-    // register page
-    _emailRegisterController  = BehaviorSubject<String>();
+    // register page    
     _emailRegisterController?.close();
-
-    _passwordRegisterController = BehaviorSubject<String>();
     _passwordRegisterController?.close();
-
-    _confirmPasswordController = BehaviorSubject<String>();
     _confirmPasswordController?.close();
-
-    _genderController = BehaviorSubject<int>();
     _genderController?.close();
   }
 

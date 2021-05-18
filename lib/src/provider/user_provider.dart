@@ -36,12 +36,12 @@ class UserProvider{
 
     final status = decodedData['status']['status'];
     final userData = decodedData['user'];
-
     if (status == 201 && decodedData.containsKey('token')) {
       // print('save preferences');
       final userTemp = UserModel.fromJson(userData);
       user.add(userTemp);
-      _userPref.token = decodedData['token'];
+      // _userPref.token = decodedData['token'];
+      _userPref.userLogIn(decodedData);
 
         return {
           'success': true, 'token': decodedData['token']

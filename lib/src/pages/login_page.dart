@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_list_app/src/bloc/login_bloc.dart';
 import 'package:simple_list_app/src/provider/user_provider.dart';
-import 'package:simple_list_app/src/singleton/bloc.dart';
+import 'package:simple_list_app/src/user_preferences/user_preferences.dart';
+// import 'package:simple_list_app/src/singleton/bloc.dart';
 import 'package:simple_list_app/src/widgets/dialog_alert.dart';
 
 class LoginPage extends StatefulWidget{
@@ -13,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isChecked = false;
   final userValidate = UserProvider();
+  final _userPref = UserPreferences();
+  final bloc = LoginBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
     final height = screen.size.height;    
     final width = screen.size.width;  
       
-    final bloc = Provider.loginBloc(context);
     // TODO: implement build
     return SafeArea(
       child: Scaffold(
@@ -64,7 +66,10 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: height * 0.02,),
                 FlatButton(
                   child: Text('Crear cuenta'),
-                  onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+                  onPressed: () {
+                    bloc.dispose();
+                    Navigator.pushNamed(context, 'register');
+                  } 
                 ),
               ],
             ),
@@ -80,17 +85,9 @@ class _LoginPageState extends State<LoginPage> {
       stream: bloc.emailStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return TextField(
+          keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Correo',
-            // border: OutlineInputBorder(),
-            // focusedBorder: OutlineInputBorder(
-            //   borderSide: BorderSide(
-            //     color: Color.fromRGBO(179, 99, 194, 1)
-            //   )
-            // ),
-            // labelStyle: TextStyle(
-            //   color: Color.fromRGBO(179, 99, 194, 1),
-            // ),
             errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changeEmail(value),
@@ -106,18 +103,10 @@ class _LoginPageState extends State<LoginPage> {
       stream: bloc.passwordStream,
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return TextField(
+          keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Contraseña',
-            // border: OutlineInputBorder(),
-            // focusedBorder: OutlineInputBorder(
-            //   borderSide: BorderSide(
-            //     color: Color.fromRGBO(179, 99, 194, 1)
-            //   )
-            // ),
-            // labelStyle: TextStyle(
-            //   color: Color.fromRGBO(179, 99, 194, 1),
-            // ),
             errorText: snapshot.error
           ),
           onChanged: (String value) => bloc.changePassword(value),

@@ -16,13 +16,18 @@ class UserPreferences{
     _userPref = await SharedPreferences.getInstance();
   }
 
-  get token{
-    return _userPref.getString('token') ?? '';
-  }
+  get token => _userPref.getString('token') ?? '';
+  set token(String value) => _userPref.setString('token', value);
+  
 
-  set token(String value){
-    _userPref.setString('token', value);    
-  }
+  get userName => _userPref.getString('userName') ?? '';
+  set userName(String value) => _userPref.setString('userName', value);
+
+  get email => _userPref.getString('email') ?? '';
+  set email(String value) => _userPref.setString('email', value);
+
+  get gender => _userPref.getString('gender') ?? '';
+  set gender(String value) => _userPref.setString('gender', value);
 
 
   // evaluate token
@@ -32,6 +37,19 @@ class UserPreferences{
 
   setInitialRoute( String value ) {
     _userPref.setString('initialRoute', value);
+  }
+
+  userLogIn(Map<String, dynamic> userInfo){
+    String _token = userInfo['token'];
+    token = _token;
+    userName = userInfo['user']['username'];
+    email = userInfo['user']['email'];
+    gender = userInfo['user']['sex'];
+
+  }
+
+  userLogOut(){
+    token = '';
   }
 
 
